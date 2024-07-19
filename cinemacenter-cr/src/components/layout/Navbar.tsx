@@ -8,17 +8,35 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Image from "next/image";
+import * as React from 'react';
 
 type NavigationItem = {
   name: string;
   href: string;
   current: boolean;
+  subItems?: { name: string; href: string }[]; // Sub-items for dropdown
 };
 
 const navigation: NavigationItem[] = [
-  { name: "Cine Coliseo", href: "#", current: false },
-  { name: "Teatro Español", href: "#", current: false },
-  { name: "Cartelera", href: "#", current: false },
+  {
+    name: "Cine Coliseo",
+    href: "#",
+    current: false,
+    subItems: [
+      { name: "DeadPool & Wolverine", href: "#" },
+      { name: "Intensamente 2", href: "#" },
+      { name: "Mi Villano Favorito 4", href: "#" },
+    ],
+  },
+  {
+    name: "Teatro Español",
+    href: "#",
+    current: false,
+    subItems: [
+      { name: "Twister", href: "#" },
+      { name: "Un Lugar En Silencio Día Uno", href: "#" },
+    ],
+  }
 ];
 
 function classNames(...classes: string[]) {
@@ -26,6 +44,16 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+  const [currentMenu, setCurrentMenu] = React.useState<string | null>(null);
+
+  const handleMouseEnter = (menuName: string) => {
+    setCurrentMenu(menuName);
+  };
+
+  const handleMouseLeave = () => {
+    setCurrentMenu(null);
+  };
+
   return (
     <MaxWidthWrapper>
       <Disclosure as="nav" className="bg-gray-800 mt-4">
@@ -53,31 +81,69 @@ export default function Navbar() {
                 <Image
                   alt="Your Company"
                   src="/logoCine.png"
-                  width={150}  
-                  height={50}  
+                  width={150}
+                  height={50}
                 />
               </div>
             </div>
 
             {/* Navigation Links */}
-            <div className="flex flex-1 items-center justify-center sm:justify-center ml-[-20%]">
-              <div className="hidden sm:ml-6 sm:block">
-                <div className="flex space-x-4">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      aria-current={item.current ? "page" : undefined}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
+            <div className="flex pr-96">
+              <div className="hidden sm:flex sm:ml-6">
+                <div className="flex space-x-5 items-center">
+                  {navigation.map((item) =>
+                    item.subItems ? (
+                      <div
+                        key={item.name}
+                        onMouseEnter={() => handleMouseEnter(item.name)}
+                        onMouseLeave={handleMouseLeave}
+                        className="relative"
+                      >
+                        <a
+                          href={item.href}
+                          aria-current={item.current ? "page" : undefined}
+                          className={classNames(
+                            item.current
+                              ? "bg-gray-900 text-white"
+                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "rounded-md px-3 py-2 text-sm font-medium"
+                          )}
+                        >
+                          {item.name}
+                        </a>
+                        {currentMenu === item.name && (
+                          <div
+                            className="absolute z-10 mt-2 bg-gray-700 text-white rounded-md shadow-lg"
+                            style={{ minWidth: '200px' }}
+                          >
+                            {item.subItems.map(subItem => (
+                              <a
+                                key={subItem.name}
+                                href={subItem.href}
+                                className="block px-4 py-2 text-sm hover:bg-gray-600"
+                              >
+                                {subItem.name}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        aria-current={item.current ? "page" : undefined}
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
+                        )}
+                      >
+                        {item.name}
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
             </div>
