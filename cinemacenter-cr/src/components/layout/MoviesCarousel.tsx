@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 const MoviesCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
-      img: '/MoviesCarousel/DeadPoolWolverine.jpg',
-      alt: 'DeadPool Wolverine',
+      img: "/MoviesCarousel/DeadPoolWolverine.jpg",
+      alt: "DeadPool Wolverine",
     },
     {
-      img: '/MoviesCarousel/Intensamente2.jpg',
-      alt: 'Intensamente 2',
+      img: "/MoviesCarousel/Intensamente2.jpg",
+      alt: "Intensamente 2",
     },
     {
-      img: '/MoviesCarousel/MiVillanoFavorito4.jpg',
-      alt: 'Mi Villano Favorito 4',
+      img: "/MoviesCarousel/MiVillanoFavorito4.jpg",
+      alt: "Mi Villano Favorito 4",
     },
     {
-      img: '/MoviesCarousel/Twister.jpg',
-      alt: 'Twister',
+      img: "/MoviesCarousel/Twister.jpg",
+      alt: "Twister",
     },
     {
-      img: '/MoviesCarousel/UnLugarEnSilencioDiaUno.jpg',
-      alt: 'Un Lugar En Silencio Día Uno',
+      img: "/MoviesCarousel/UnLugarEnSilencioDiaUno.jpg",
+      alt: "Un Lugar En Silencio Día Uno",
     },
   ];
 
@@ -45,15 +45,18 @@ const MoviesCarousel: React.FC = () => {
   }, []);
 
   return (
-    <div id="carouselExampleIndicators" className="-mt-8 relative overflow-hidden">
+    <div
+      id="carouselExampleIndicators"
+      className="relative overflow-hidden w-full"
+    >
       {/* Indicator dots */}
-      <div className="absolute bottom-1 left-0 right-0 flex justify-center p-4 space-x-2 z-10">
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center p-4 space-x-2 z-10">
         {slides.map((_, index) => (
           <button
             key={index}
             type="button"
-            className={`w-3 h-3 rounded-full ${
-              index === currentSlide ? 'bg-white' : 'bg-gray-300'
+            className={`w-4 h-4 rounded-full ${
+              index === currentSlide ? "bg-white" : "bg-gray-300"
             }`}
             onClick={() => setCurrentSlide(index)}
             aria-current={index === currentSlide}
@@ -69,13 +72,16 @@ const MoviesCarousel: React.FC = () => {
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {slides.map((slide, index) => (
-            <div key={index} className="flex-shrink-0 w-full h-[450px] relative">
+            <div
+              key={index}
+              className="flex-shrink-0 w-full h-[50vh] sm:h-[450px] relative"
+            >
               <Image
                 src={slide.img}
                 alt={slide.alt}
                 fill
                 sizes="100vw"
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: "cover" }}
                 className="w-full h-full"
               />
             </div>
